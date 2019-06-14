@@ -1,0 +1,26 @@
+ 
+version: '3'
+
+services:
+
+  be-mock-api:
+    build:
+      context: be-mock-api
+    network_mode: host
+    environment:
+      PORT: 5000
+      DB_NAME_MONGO: API_MOCK
+      MONGO_CONNECTION: mongodb://localhost:27017/
+      
+  ui-mock-api:
+    build:
+      context: ui-mock-api
+    ports:
+      - "3000:3000"
+
+  mongo:
+    image: mongo
+    volumes:
+      - .mongo_data:/data/db
+    ports:
+      - 27017:27017
