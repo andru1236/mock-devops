@@ -18,6 +18,9 @@ git clone git@gitlab.jalasoft.local:mock-api/ui-mock-api.git
 ###########################
 # CHANGE HOST   REQUIRED  #
 ###########################
+
+cd ui-api-mock
+
 # Edit file /src/services/ApiServiceRest.ts
 nano src/services/ApiServiceRest.ts
 
