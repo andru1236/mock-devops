@@ -20,6 +20,7 @@ git clone git@gitlab.jalasoft.local:mock-api/ui-mock-api.git
 ###########################
 # Edit file /src/services/ApiServiceRest.ts
 nano src/services/ApiServiceRest.ts
+
 # line 8 change BASE_URL
 # public readonly BASE_URL = 'your_ip:5000/api/v1';
 # EXAMPLE:
