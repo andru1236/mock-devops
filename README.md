@@ -29,7 +29,7 @@ nano src/services/ApiServiceRest.ts
 # EXAMPLE:
 public readonly BASE_URL = 'http://10.30.128.56:5000/api/v1';
 
-# Go root path
+# Go root path /devops-mock-api
 cd ..
 
 # up all stack 
