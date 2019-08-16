@@ -36,5 +36,5 @@ cd ..
 docker-compose up --build
 
 # run as daemon (optional)
-docker-compose -up -d
+docker-compose up -d
 ```
