@@ -16,7 +16,7 @@ services:
     build:
       context: ui-mock-api
     ports:
-      - "3000:3000"
+      - "3000:80"
 
   mongo:
     image: mongo
