@@ -21,20 +21,16 @@ git clone git@gitlab.jalasoft.local:mock-api/ui-mock-api.git
 
 cd ui-mock-api
 
-# Edit file /src/services/ApiServiceRest.ts
-nano src/services/ApiServiceRest.ts
+nano .env
+# Replace the REACT_APP_BACKEND for your ip
+# Example
+REACT_APP_BACKEND=10.2.9.10
 
-# line 8 change BASE_URL
-# public readonly BASE_URL = 'your_ip:5000/api/v1';
-# EXAMPLE:
-public readonly BASE_URL = 'http://10.30.128.56:5000/api/v1';
-
-# Go root path /devops-mock-api
 cd ..
 
-# up all stack 
-docker-compose up --build
-
-# run as daemon (optional)
+# run all as service
 docker-compose up -d
+
+# run with all stout in the console
+docker-compose up --build
 ```
