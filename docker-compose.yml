@@ -19,8 +19,9 @@ services:
       - "3000:80"
 
   mongo:
-    image: mongo
+    build:
+      context: db_mock_api
     volumes:
-      - .mongo_data:/data/db
+      - ./db_mock_api/data:/data/db
     ports:
       - 27017:27017
