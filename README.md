@@ -2,24 +2,24 @@
 
 > Clone devops repository
 
-`git clone git@gitlab.jalasoft.local:mock-api/devops-mock-api.git`
+`git clone git@github.com:andru1236/mock-devops.git`
 
 > Clone backend and ui repository inside the devops repository
 
 ``` bash
-cd devops-mock-api
+cd mock-devops
 
 # Clone backend
-git clone git@gitlab.jalasoft.local:mock-api/be-mock-api.git
+git clone git@github.com:andru1236/mock-backend.git
 
 # Clone ui
-git clone git@gitlab.jalasoft.local:mock-api/ui-mock-api.git
+git clone git@github.com:andru1236/mock-ui.git
 
 ###########################
 # CHANGE HOST   REQUIRED  #
 ###########################
 
-cd ui-mock-api
+cd mock-ui
 
 nano .env
 # Replace the REACT_APP_BACKEND for your ip
