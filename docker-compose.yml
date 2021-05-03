@@ -1,9 +1,5 @@
 version: '3.4'
 
-networks:
-  app-network:
-    driver: bridge
-
 x-base-be-config: &be-config
   env_file: .env
   build:
@@ -12,8 +8,7 @@ x-base-be-config: &be-config
   image: ${IMAGE_NAME_BE}
   depends_on: 
     - mongo-db
-  networks:
-    - app-network
+  network_mode: host
 
 services:
   mock-backend-rest:
@@ -31,6 +26,7 @@ services:
     command: ["python", "run_grpc_server.py"]
 
   mock-gql-gateway:
+    network_mode: host
     env_file: .env
     build:
       context: mock-gateway
@@ -41,9 +37,8 @@ services:
       - ${GQL_PORT}:${GQL_PORT}
     depends_on:
       - mongo-db
-    networks:
-      - app-network
     command: ["npm", "start"]
+
 
   mongo-db:
     env_file: .env
@@ -53,17 +48,19 @@ services:
     container_name: mongo_mock_container
     ports:
       - ${MONGO_PORT}:27017
-    networks:
-      - app-network
     volumes:
       - ./db_mock/data:/data/db
 
-  ui-mock-api:
+  mock-ui:
     env_file: .env
     build:
       context: mock-ui
       dockerfile: Dockerfile
-    image: mock-ui-image
-    container_name: mock-ui-container
+    image: ${IMAGE_NAME_UI}
+    container_name: ${CONTAINER_NAME_UI}
     ports:
       - ${UI_PORT}:80
+    depends_on:
+      - mock-backend-rest
+      - mock-backend-grpc
+      - mock-gql-gateway
