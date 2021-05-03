@@ -1,27 +1,69 @@
- 
-version: '3'
+version: '3.4'
+
+networks:
+  app-network:
+    driver: bridge
+
+x-base-be-config: &be-config
+  env_file: .env
+  build:
+    context: mock-backend
+    dockerfile: docker/Dockerfile
+  image: ${IMAGE_NAME_BE}
+  depends_on: 
+    - mongo-db
+  networks:
+    - app-network
 
 services:
-
-  be-mock-api:
-    build:
-      context: be-mock-api
-    network_mode: host
-    environment:
-      PORT: 5000
-      DB_NAME_MONGO: API_MOCK
-      MONGO_CONNECTION: mongodb://localhost:27017/
-      
-  ui-mock-api:
-    build:
-      context: ui-mock-api
+  mock-backend-rest:
+    <<: *be-config
+    container_name: ${CONTAINER_NAME_BE_REST_API}
     ports:
-      - "3000:80"
+      - ${API_REST_PORT}:${API_REST_PORT}
+    command: ["python", "run_api_rest.py"]
 
-  mongo:
+  mock-backend-grpc:
+    <<: *be-config
+    container_name: ${CONTAINER_NAME_BE_GRPC}
+    ports:
+      - ${GRPC_PORT}:${GRPC_PORT}
+    command: ["python", "run_grpc_server.py"]
+
+  mock-gql-gateway:
+    env_file: .env
     build:
-      context: db_mock_api
+      context: mock-gateway
+      dockerfile: docker/Dockerfile
+    image: ${IMAGE_NAME_GQL}
+    container_name: ${CONTAINER_NAME_GQL}
+    ports:
+      - ${GQL_PORT}:${GQL_PORT}
+    depends_on:
+      - mongo-db
+    networks:
+      - app-network
+    command: ["npm", "start"]
+
+  mongo-db:
+    env_file: .env
+    build: 
+      context: db_mock
+    image: mongo_mock
+    container_name: mongo_mock_container
+    ports:
+      - ${MONGO_PORT}:27017
+    networks:
+      - app-network
     volumes:
-      - ./db_mock_api/data:/data/db
+      - ./db_mock/data:/data/db
+
+  ui-mock-api:
+    env_file: .env
+    build:
+      context: mock-ui
+      dockerfile: Dockerfile
+    image: mock-ui-image
+    container_name: mock-ui-container
     ports:
-      - 27017:27017
+      - ${UI_PORT}:80
